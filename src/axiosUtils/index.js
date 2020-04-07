@@ -7,13 +7,14 @@ const instanceAxios=axios.create({
     responseType:'json'
 });
 
-export const customAxios= async (url='',data={},method='post',contentType='application/json')=>{
+export const customAxios= async (url='',data={},method='post',contentType='application/json',Authorization='')=>{
     return await instanceAxios({
         method:method,
         url:URL+url,
         data:data,
         headers:{
-            'Content-Type': contentType
+            'Content-Type': contentType,
+            'Authorization':Authorization
         }
     })
 }
