@@ -34,6 +34,25 @@ import {
 } from "reactstrap";
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      form:{
+        email:'',
+        password:''
+      }
+    }
+  }
+
+  handleChange=e=>{
+    this.setState({
+      form:{
+        ...this.state.form,
+        [e.target.name]:e.target.value
+      }
+    })
+  }
+  
   render() {
     return (
       <>
@@ -86,7 +105,7 @@ class Login extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input onChange={this.handleChange} name="email" placeholder="Email" type="email" autoComplete="new-email"/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -96,7 +115,7 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input onChange={this.handleChange} name="password" placeholder="Password" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
