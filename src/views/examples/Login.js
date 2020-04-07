@@ -30,7 +30,8 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Alert
 } from "reactstrap";
 
 // Custom Axios Utils
@@ -43,6 +44,11 @@ class Login extends React.Component {
       form:{
         email:'',
         password:''
+      },
+      alert:{
+        type:'',
+        status:false,
+        text:''
       }
     }
   }
@@ -64,6 +70,13 @@ class Login extends React.Component {
     }).catch(error=>{
       const response = error.response
       console.log(response.data.error)
+      this.setState({
+        alert:{
+          type:'danger',
+          status:true,
+          text:response.data.error
+        }
+      })
     })
   }
   
@@ -145,6 +158,12 @@ class Login extends React.Component {
                     <span className="text-muted">Remember me</span>
                   </label>
                 </div>
+                {this.state.alert.status && 
+                  <Alert color={this.state.alert.type}>
+                    {this.state.alert.text}
+                  </Alert>
+                }
+               
                 <div className="text-center">
                   <Button onClick={this.submit} className="my-4" color="primary" type="button">
                     Sign in
