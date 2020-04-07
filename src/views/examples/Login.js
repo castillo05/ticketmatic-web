@@ -31,7 +31,8 @@ import {
   InputGroup,
   Row,
   Col,
-  Alert
+  Alert,
+  Spinner
 } from "reactstrap";
 
 // Custom Axios Utils
@@ -49,7 +50,8 @@ class Login extends React.Component {
         type:'',
         status:false,
         text:''
-      }
+      },
+      loading:false
     }
   }
 
@@ -64,9 +66,10 @@ class Login extends React.Component {
 
   submit=e=>{
     e.preventDefault();
-
+    this.setState({loading:true})
     customAxios('/login',this.state.form,'post').then(ress=>{
       console.log(ress)
+      this.setState({loading:false,alert:{status:false}})
     }).catch(error=>{
       const response = error.response
       console.log(response.data.error)
@@ -75,7 +78,8 @@ class Login extends React.Component {
           type:'danger',
           status:true,
           text:response.data.error
-        }
+        },
+        loading:false
       })
     })
   }
@@ -166,7 +170,9 @@ class Login extends React.Component {
                
                 <div className="text-center">
                   <Button onClick={this.submit} className="my-4" color="primary" type="button">
-                    Sign in
+                    {this.state.loading ? <Spinner type="grow" color="success" /> :  'Sign in'}
+                  
+                   
                   </Button>
                 </div>
               </Form>
