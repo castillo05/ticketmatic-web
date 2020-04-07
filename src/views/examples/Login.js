@@ -33,6 +33,9 @@ import {
   Col
 } from "reactstrap";
 
+// Custom Axios Utils
+import {customAxios} from '../../axiosUtils';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -50,6 +53,17 @@ class Login extends React.Component {
         ...this.state.form,
         [e.target.name]:e.target.value
       }
+    })
+  }
+
+  submit=e=>{
+    e.preventDefault();
+
+    customAxios('/login',this.state.form,'post').then(ress=>{
+      console.log(ress)
+    }).catch(error=>{
+      const response = error.response
+      console.log(response.data.error)
     })
   }
   
@@ -132,7 +146,7 @@ class Login extends React.Component {
                   </label>
                 </div>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+                  <Button onClick={this.submit} className="my-4" color="primary" type="button">
                     Sign in
                   </Button>
                 </div>
