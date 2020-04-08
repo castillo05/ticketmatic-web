@@ -66,7 +66,8 @@ class Register extends React.Component {
   saveUser=e=>{
     e.preventDefault()
     customAxios('/register',this.state.form,'post','application/json').then(ress=>{
-      
+      localStorage.setItem('token',JSON.stringify(`Bearer ${ress.data.token}`));
+      this.props.history.push('/admin')
     }).catch(error=>{
       const response = error.response
      
