@@ -30,7 +30,8 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Alert
 } from "reactstrap";
 
 import {customAxios} from '../../axiosUtils';
@@ -44,6 +45,11 @@ class Register extends React.Component {
         email:'',
         id_tipousuario:2,
         password_confirmation:''
+      },
+      alert:{
+        type:'',
+        status:false,
+        text:''
       }
     }
   }
@@ -60,10 +66,22 @@ class Register extends React.Component {
   saveUser=e=>{
     e.preventDefault()
     customAxios('/register',this.state.form,'post','application/json').then(ress=>{
-      console.log(ress)
+      
     }).catch(error=>{
       const response = error.response
-      console.log(response.data.error)
+     
+      Object.values(response.data).forEach(element => {
+        //  console.log(element[0])
+          
+         this.setState({
+          alert:{
+            type:'danger',
+            status:true,
+            text:element[0]
+          }
+        })
+      });
+      
     })
   }
 
@@ -121,6 +139,11 @@ class Register extends React.Component {
                     <Input onChange={this.hamdleChange} name="password_confirmation" placeholder="Password Confirmation" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
+                {this.state.alert.status && 
+                  <Alert color={this.state.alert.type}>
+                    {this.state.alert.text}
+                  </Alert>
+                }
                 <div className="text-muted font-italic">
                   <small>
                     password strength:{" "}
