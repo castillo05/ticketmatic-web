@@ -44,6 +44,7 @@ import {customAxios} from '../../axiosUtils';
 class Tables extends React.Component {
   constructor(props) {
     super(props);
+    this.identity=JSON.parse(localStorage.getItem('identity'));
     this.state={
       tickets:[]
     }
@@ -51,15 +52,29 @@ class Tables extends React.Component {
 
   getTickets=e=>{
     let token = localStorage.getItem('token');
-    customAxios('/tickets',{},'get','application/json',token).then(ress=>{
-      console.log(ress.data)
-      this.setState({
-        tickets:ress.data
+    
+    if(this.identity.id_tipousuario===1){
+        customAxios('/tickets',{},'get','application/json',token).then(ress=>{
+        console.log(ress.data)
+        this.setState({
+          tickets:ress.data
+        })
+      }).catch(error=>{
+        const response = error.response
+        console.log(response.data.error)
       })
-    }).catch(error=>{
-      const response = error.response
-      console.log(response.data.error)
-    })
+    }else{
+      customAxios(`/ticket/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
+        console.log(ress)
+        this.setState({
+          tickets:ress.data.tickets
+        })
+      }).catch(error=>{
+        const response = error.response
+        console.log(response.data.error)
+      })
+    }
+    
   }
   // Validar Identity
   verifiedIdentity=()=>{
@@ -95,8 +110,9 @@ class Tables extends React.Component {
                    
                     <tr>
                       <th scope="col">Ticket #</th>
-                      <th scope="col">Usuario</th>
+                      {this.identity.id_tipousuario===1?<th scope="col">Usuario</th>:null}
                       <th scope="col">Descripción</th>
+                      
                       <th scope="col" />
                     </tr>
                   </thead>
@@ -105,15 +121,18 @@ class Tables extends React.Component {
                       <tr key={t.id}>
                      
                       <td>{t.id}</td>
-                      <td>
-                        <Badge color="" className="badge-dot mr-4">
-                          <i className="bg-success" />
-                          {t.name}
-                        </Badge>
-                      </td>
+                      {this.identity.id_tipousuario===1?
+                        <td>
+                          <Badge color="" className="badge-dot mr-4">
+                            <i className="bg-success" />
+                            {t.name}
+                          </Badge>
+                        </td> : null
+                      }
                       <td>
                         {t.ticket_pedido}
                       </td>
+                      
                      
                       <td className="text-right">
                         <UncontrolledDropdown>

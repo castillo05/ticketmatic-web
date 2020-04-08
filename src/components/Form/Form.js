@@ -7,9 +7,14 @@ import Header from 'components/Headers/Header';
 
 
 class FormData extends Component {
+    _isMount=false;
     constructor(props) {
         super(props);
-        
+
+        const identity=JSON.parse(localStorage.getItem('identity'));
+        console.log(identity.id_tipousuario)
+        if(identity.id_tipousuario===2){this.props.history.push('/auth')}
+       
         this.state = { 
             users:[],
             form:{
@@ -63,11 +68,15 @@ class FormData extends Component {
 
     
     getUsers=e=>{
+        this._isMount=true;
         let token = localStorage.getItem('token');
        
         customAxios('/users',{},'get','application/json',token).then(ress=>{
-            console.log(ress)
-            this.setState({users:ress.data})
+            if(this._isMount){
+                 console.log(ress)
+                this.setState({users:ress.data})
+            }
+           
         }).catch(error=>{
             const response = error.response
             console.log(response.data.error)
@@ -89,6 +98,10 @@ class FormData extends Component {
     componentDidMount(){
         this.verifiedIdentity();
         
+    }
+
+    componentWillUnmount(){
+        this._isMount=false;
     }
     render() { 
         return (

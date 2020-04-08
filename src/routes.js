@@ -55,7 +55,7 @@ var routes = [
   // },
   {
     path: "/tables",
-    name: "Tables",
+    name: "Tickets",
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
     layout: "/admin"
