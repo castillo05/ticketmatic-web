@@ -58,7 +58,8 @@ var routes = [
     name: "Tickets",
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
-    layout: "/admin"
+    layout: "/admin",
+    auth:"user"
   },
   {
     path: "/login",
@@ -81,7 +82,8 @@ var routes = [
     name: "Nuevo Ticket",
     icon: "ni ni-circle-08 text-pink",
     component: FormData,
-    layout: "/admin"
+    layout: "/admin",
+    auth:"admin"
   }
 ];
 export default routes;

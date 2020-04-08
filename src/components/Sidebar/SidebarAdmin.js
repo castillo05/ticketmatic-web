@@ -54,7 +54,7 @@ import {
 
 var ps;
 
-class Sidebar extends React.Component {
+class SidebarAdmin extends React.Component {
   state = {
     collapseOpen: false
   };
@@ -78,10 +78,10 @@ class Sidebar extends React.Component {
       collapseOpen: false
     });
   };
-  // creates the links that appear in the left menu / Sidebar
+  // creates the links that appear in the left menu / SidebarAdmin
   createLinks = routes => {
     return routes.map((prop, key) => {
-      return prop.show === 'false' || prop.auth === "admin" ? null :
+      return prop.show !== 'false' ? 
         <NavItem key={key}>
           <NavLink
             to={prop.layout + prop.path}
@@ -92,7 +92,7 @@ class Sidebar extends React.Component {
             <i className={prop.icon} />
             {prop.name}
           </NavLink>
-        </NavItem>
+        </NavItem>:null
       
     });
   };
@@ -216,19 +216,19 @@ class Sidebar extends React.Component {
             {/* Navigation */}
             <Nav className="mb-md-3" navbar>
               {/* <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
+                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-SidebarAdmin">
                   <i className="ni ni-spaceship" />
                   Getting started
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
+                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-SidebarAdmin">
                   <i className="ni ni-palette" />
                   Foundation
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-sidebar">
+                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-SidebarAdmin">
                   <i className="ni ni-ui-04" />
                   Components
                 </NavLink>
@@ -236,7 +236,7 @@ class Sidebar extends React.Component {
             </Nav>
             <Nav className="mb-md-3" navbar>
               {/* <NavItem className="active-pro active">
-                <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
+                <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-SidebarAdmin">
                   <i className="ni ni-spaceship" />
                   Upgrade to PRO
                 </NavLink>
@@ -249,11 +249,11 @@ class Sidebar extends React.Component {
   }
 }
 
-Sidebar.defaultProps = {
+SidebarAdmin.defaultProps = {
   routes: [{}]
 };
 
-Sidebar.propTypes = {
+SidebarAdmin.propTypes = {
   // links that will be displayed inside the component
   routes: PropTypes.arrayOf(PropTypes.object),
   logo: PropTypes.shape({
@@ -270,4 +270,4 @@ Sidebar.propTypes = {
   })
 };
 
-export default Sidebar;
+export default SidebarAdmin;

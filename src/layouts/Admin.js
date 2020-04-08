@@ -23,11 +23,18 @@ import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import SidebarAdmin from "components/Sidebar/SidebarAdmin.js";
 
 import routes from "routes.js";
 
-class Admin extends React.Component {
 
+class Admin extends React.Component {
+  constructor(props) {
+    super(props);
+    this.identity=JSON.parse(localStorage.getItem('identity'));
+  }
+  
+  
   // Validar Identity
   verifiedIdentity=()=>{
     const token = JSON.parse(localStorage.getItem('token'));
@@ -75,6 +82,9 @@ componentDidMount(){
   render() {
     return (
       <>
+      {this.identity.id_tipousuario===2 ?
+      
+      
         <Sidebar
           {...this.props}
           routes={routes}
@@ -83,7 +93,17 @@ componentDidMount(){
             imgSrc: require("assets/img/brand/argon-react.png"),
             imgAlt: "..."
           }}
+        />:
+        <SidebarAdmin
+          {...this.props}
+          routes={routes}
+          logo={{
+            innerLink: "/admin/index",
+            imgSrc: require("assets/img/brand/argon-react.png"),
+            imgAlt: "..."
+          }}
         />
+      }
         <div className="main-content" ref="mainContent">
           <AdminNavbar
             {...this.props}
