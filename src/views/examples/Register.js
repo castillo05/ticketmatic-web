@@ -33,7 +33,40 @@ import {
   Col
 } from "reactstrap";
 
+import {customAxios} from '../../axiosUtils';
+
 class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      form:{
+        name:'',
+        email:'',
+        id_tipousuario:2,
+        password_confirmation:''
+      }
+    }
+  }
+  
+  hamdleChange=e=>{
+    this.setState({
+      form:{
+        ...this.state.form,
+        [e.target.name]:e.target.value
+      }
+    })
+  }
+
+  saveUser=e=>{
+    e.preventDefault()
+    customAxios('/register',this.state.form,'post','application/json').then(ress=>{
+      console.log(ress)
+    }).catch(error=>{
+      const response = error.response
+      console.log(response.data.error)
+    })
+  }
+
   render() {
     return (
       <>
@@ -41,43 +74,12 @@ class Register extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardHeader className="bg-transparent pb-5">
               <div className="text-muted text-center mt-2 mb-4">
-                <small>Sign up with</small>
+                <small>Registrarse</small>
               </div>
-              <div className="text-center">
-                <Button
-                  className="btn-neutral btn-icon mr-4"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/github.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/google.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
-              </div>
+              
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center text-muted mb-4">
-                <small>Or sign up with credentials</small>
-              </div>
+              
               <Form role="form">
                 <FormGroup>
                   <InputGroup className="input-group-alternative mb-3">
@@ -86,7 +88,7 @@ class Register extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Name" type="text" />
+                    <Input onChange={this.hamdleChange} name="name" placeholder="Name" type="text" />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -96,7 +98,7 @@ class Register extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input placeholder="Email" onChange={this.hamdleChange} name="email" type="email" autoComplete="new-email"/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -106,7 +108,17 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input onChange={this.hamdleChange} name="password" placeholder="Password" type="password" autoComplete="new-password"/>
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-lock-circle-open" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input onChange={this.hamdleChange} name="password_confirmation" placeholder="Password Confirmation" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
                 <div className="text-muted font-italic">
@@ -138,8 +150,8 @@ class Register extends React.Component {
                   </Col>
                 </Row>
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
-                    Create account
+                  <Button onClick={this.saveUser} className="mt-4" color="primary" type="button">
+                    Crear Cuenta
                   </Button>
                 </div>
               </Form>

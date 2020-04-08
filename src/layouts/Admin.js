@@ -27,6 +27,19 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 
 class Admin extends React.Component {
+
+  // Validar Identity
+  verifiedIdentity=()=>{
+    const token = JSON.parse(localStorage.getItem('token'));
+    console.log(token)
+    if(!token){
+       return this.props.history.push('/auth')
+    }
+}
+
+componentDidMount(){
+  this.verifiedIdentity();
+}
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;

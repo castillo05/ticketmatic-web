@@ -47,7 +47,6 @@ import {
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
-import FormData from 'components/Form/Form.js';
 
 class Index extends React.Component {
   constructor(props){
@@ -65,7 +64,7 @@ class Index extends React.Component {
   // Validar Identity
   verifiedIdentity=()=>{
     const token = JSON.parse(localStorage.getItem('token'));
-    
+    console.log(token)
     if(!token){
         this.props.history.push('/auth')
     }
@@ -91,7 +90,7 @@ componentDidMount(){
         <Container className="mt--7" fluid>
           <Row>
             <Col className="mb-5 mb-xl-0" xl="6">
-              <FormData></FormData>
+             Hola
             </Col>
             <Col xl="4">
               
@@ -102,7 +101,7 @@ componentDidMount(){
               
             </Col>
             <Col xl="4">
-             
+             Hola Mundo
             </Col>
           </Row>
         </Container>

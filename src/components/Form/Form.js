@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, FormText,ButtonToggle,Alert } from 'reactstrap';
 import {customAxios} from '../../axiosUtils';
 
+// Components
+import Header from 'components/Headers/Header';
+
+
 class FormData extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +51,13 @@ class FormData extends Component {
         }).catch(error=>{
             const response = error.response
             console.log(response.data.error)
+            this.setState({
+                alert:{
+                  type:'danger',
+                  status:true,
+                  text:response.data.error
+                }
+              })
         })
     }
 
@@ -62,11 +73,27 @@ class FormData extends Component {
             console.log(response.data.error)
         })
     }
+
+    
+  // Validar Identity
+  verifiedIdentity=()=>{
+    const token = JSON.parse(localStorage.getItem('token'));
+    console.log(token)
+    if(!token){
+       return this.props.history.push('/auth')
+    }
+    this.getUsers()
+}
+
+
     componentDidMount(){
-        this.getUsers()
+        this.verifiedIdentity();
+        
     }
     render() { 
-        return ( 
+        return (
+            <> 
+            <Header />
             <div>
                <Form>
                    <FormGroup>
@@ -96,6 +123,7 @@ class FormData extends Component {
                    <ButtonToggle onClick={this.saveTicket} color="primary">Guardar Ticket</ButtonToggle>
                </Form>
             </div>
+            </>
          );
     }
 }
