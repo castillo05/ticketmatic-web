@@ -27,6 +27,14 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 import routes from "routes.js";
 
 class Auth extends React.Component {
+  constructor(props) {
+    super(props);
+    this.token = localStorage.getItem('token');
+    if(this.token){
+      this.props.history.push('/admin');
+    }
+  }
+  
   componentDidMount() {
     document.body.classList.add("bg-default");
   }
@@ -49,6 +57,9 @@ class Auth extends React.Component {
     });
   };
   render() {
+    if(this.token){
+      this.props.history.push('/admin');
+    }
     return (
       <>
         <div className="main-content">

@@ -67,11 +67,12 @@ class Register extends React.Component {
     e.preventDefault()
     customAxios('/register',this.state.form,'post','application/json').then(ress=>{
       localStorage.setItem('token',JSON.stringify(`Bearer ${ress.data.token}`));
+      localStorage.setItem('identity',JSON.stringify(ress.data.user));
       this.props.history.push('/admin')
     }).catch(error=>{
       const response = error.response
-     
-      Object.values(response.data).forEach(element => {
+     if(response){
+         Object.values(response.data).forEach(element => {
         //  console.log(element[0])
           
          this.setState({
@@ -82,6 +83,8 @@ class Register extends React.Component {
           }
         })
       });
+     }
+    
       
     })
   }

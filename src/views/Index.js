@@ -38,27 +38,21 @@ import {
   Col
 } from "reactstrap";
 
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "variables/charts.js";
+
 
 import Header from "components/Headers/Header.js";
 
 class Index extends React.Component {
   constructor(props){
     super(props);
+    this.token=localStorage.getItem('token');
+    this.identity=JSON.parse(localStorage.getItem('identity'));
     this.state = {
       isLogout:false,
       activeNav: 1,
       chartExample1Data: "data1"
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
+  
   }
 
   // Validar Identity
@@ -83,6 +77,7 @@ componentDidMount(){
     });
   };
   render() {
+    
     return (
       <>
         <Header />

@@ -40,10 +40,13 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import {customAxios} from '../../axiosUtils';
+import { Link } from "react-router-dom";
 
 class Tables extends React.Component {
+  _isMount=false;
   constructor(props) {
     super(props);
+    this.token = JSON.parse(localStorage.getItem('token'));
     this.identity=JSON.parse(localStorage.getItem('identity'));
     this.state={
       tickets:[]
@@ -51,30 +54,47 @@ class Tables extends React.Component {
   }
 
   getTickets=e=>{
+    this._isMount=true;
     let token = localStorage.getItem('token');
-    
-    if(this.identity.id_tipousuario===1){
-        customAxios('/tickets',{},'get','application/json',token).then(ress=>{
-        console.log(ress.data)
-        this.setState({
-          tickets:ress.data
+    if(this._isMount){
+        if(this.identity.id_tipousuario===1){
+
+          customAxios('/tickets',{},'get','application/json',token).then(ress=>{
+          console.log(ress.data)
+          if(ress.data.status==='Token is Expired'){
+            this.props.history.push('/auth')
+          }
+          this.setState({
+            tickets:ress.data
+          })
+        }).catch(error=>{
+          const response = error.response
+          console.log(error)
         })
-      }).catch(error=>{
-        const response = error.response
-        console.log(response.data.error)
-      })
-    }else{
-      customAxios(`/ticket/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
-        console.log(ress)
-        this.setState({
-          tickets:ress.data.tickets
+      }else{
+        customAxios(`/ticket/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
+          console.log(ress)
+          this.setState({
+            tickets:ress.data.tickets
+          })
+        }).catch(error=>{
+          const response = error.response
+          console.log(response.data.error)
         })
-      }).catch(error=>{
-        const response = error.response
-        console.log(response.data.error)
-      })
+      }
     }
+   
     
+  }
+  // Eliminar Ticket
+  detele=(id,e)=>{
+    customAxios('/ticket/'+id,{},'delete','application/json',this.token).then(ress=>{
+      console.log(ress)
+      this.getTickets()
+    }).catch(error=>{
+      const response = error.response
+      console.log(response.data.error)
+    })
   }
   // Validar Identity
   verifiedIdentity=()=>{
@@ -90,6 +110,9 @@ class Tables extends React.Component {
     componentDidMount(){
         this.verifiedIdentity();
     }
+    componentWillUnmount(){
+      this._isMount=false;
+   }
 
   
   render() {
@@ -146,15 +169,27 @@ class Tables extends React.Component {
                           >
                             <i className="fas fa-ellipsis-v" />
                           </DropdownToggle>
+                          {this.identity.id_tipousuario===1?
                           <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
+                             
+                              onClick={e=>this.detele(t.id,e)}
                             >
-                              Action
+                              Eliminar
                             </DropdownItem>
-                           
-                          </DropdownMenu>
+                            
+                            <DropdownItem
+                             
+                             onClick={e=>e.preventDefault()}
+
+                           >
+                             
+                             <Link to={`/ticket/${t.id}`}>
+                             Editar
+                             </Link>
+                           </DropdownItem>
+                              
+                          </DropdownMenu>: null}
                         </UncontrolledDropdown>
                       </td>
                     </tr>   

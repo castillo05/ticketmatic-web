@@ -10,15 +10,24 @@ class FormData extends Component {
     _isMount=false;
     constructor(props) {
         super(props);
-
+        console.log(props)
+        this.token = localStorage.getItem('token');
+       
         const identity=JSON.parse(localStorage.getItem('identity'));
-        console.log(identity.id_tipousuario)
+       
         if(identity.id_tipousuario===2){this.props.history.push('/auth')}
        
         this.state = { 
             users:[],
+            ticket:[],
             form:{
+                id:null,
                 id_user:null,
+                name:'',
+                ticket_pedido:''
+            },
+            formUpdate:{
+                id:null,
                 ticket_pedido:''
             },
             alert:{
@@ -83,6 +92,40 @@ class FormData extends Component {
         })
     }
 
+    getTicket=e=>{
+        this._isMount=true;
+        let token = localStorage.getItem('token');
+       
+        customAxios('/getticket/'+this.props.match.params.id,{},'get','application/json',token).then(ress=>{
+            if(this._isMount){
+                 console.log(ress.data[0])
+                 this.setState({
+                     form:{
+                         id:ress.data[0].id,
+                         id_user:ress.data[0].id_user,
+                         name:ress.data[0].name,
+                         ticket_pedido:ress.data[0].ticket_pedido
+                     }
+                })
+            }
+           
+        }).catch(error=>{
+            const response = error.response
+            console.log(response.data.error)
+        })
+    }
+
+    // Editar Ticket
+    updateTicket=()=>{
+        customAxios('/ticket/'+this.props.match.params.id,this.state.form,'put','application/json',this.token).then(ress=>{
+            console.log(ress)
+            this.props.history.goBack();
+        }).catch(error=>{
+            const response = error.response
+            console.log(response.data.error)
+        })
+    }
+
     
   // Validar Identity
   verifiedIdentity=()=>{
@@ -92,6 +135,10 @@ class FormData extends Component {
        return this.props.history.push('/auth')
     }
     this.getUsers()
+    if(this.props.match.params.id){
+        this.getTicket()
+    }
+    
 }
 
 
@@ -104,6 +151,9 @@ class FormData extends Component {
         this._isMount=false;
     }
     render() { 
+        if(!this.token){
+            this.props.history.push('/auth')
+        }
         return (
             <> 
             <Header />
@@ -114,8 +164,11 @@ class FormData extends Component {
                         <Input onChange={this.handleChange} name="id_user" type="select" id="exampleSelect">
                         <option>Elija un usuario</option>
                         {this.state.users.map(u=>
-                            <option value={u.id} key={u.id}>{u.name}</option>
-                        )}
+                        this.state.form.id_user===u.id?
+                            <option selected value={this.state.form.id_user===u.id?this.state.form.id_user:u.id} key={this.state.form.id_user===u.id?this.state.form.id_user:u.id}>{this.state.form.id_user===u.id?this.state.form.name:u.name}</option>
+                        :<option value={u.id} key={u.id}>{u.name}</option>
+                        
+                            )}
                         </Input>
                    </FormGroup>
                    <FormGroup>
@@ -126,6 +179,7 @@ class FormData extends Component {
                             name="ticket_pedido"
                             id="ticket_pedido"
                             placeholder="Descripción"
+                            defaultValue={this.state.form.ticket_pedido}
                         />
                    </FormGroup>
                    {this.state.alert.status && 
@@ -133,8 +187,12 @@ class FormData extends Component {
                     {this.state.alert.text}
                   </Alert>
                 }
-                   <ButtonToggle onClick={this.saveTicket} color="primary">Guardar Ticket</ButtonToggle>
-               </Form>
+                {this.props.match.params.id ?
+                    <ButtonToggle onClick={this.updateTicket} color="warning">Editar Ticket</ButtonToggle>
+                    :<ButtonToggle onClick={this.saveTicket} color="primary">Guardar Ticket</ButtonToggle>
+               
+                }
+                   </Form>
             </div>
             </>
          );

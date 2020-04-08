@@ -29,9 +29,16 @@ import routes from "routes.js";
 
 
 class Admin extends React.Component {
+   
   constructor(props) {
     super(props);
     this.identity=JSON.parse(localStorage.getItem('identity'));
+    this.token = localStorage.getItem('token');
+    
+    if(this.identity === null){
+      console.log('No hay Token')
+      return this.props.history.push('/auth')
+    }
   }
   
   
@@ -80,8 +87,10 @@ componentDidMount(){
     return "Brand";
   };
   render() {
+   
     return (
       <>
+     
       {this.identity.id_tipousuario===2 ?
       
       
