@@ -45,7 +45,7 @@ class Admin extends React.Component {
   // Validar Identity
   verifiedIdentity=()=>{
     const token = JSON.parse(localStorage.getItem('token'));
-    console.log(token)
+   
     if(!token){
        return this.props.history.push('/auth')
     }

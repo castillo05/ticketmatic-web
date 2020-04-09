@@ -83,22 +83,15 @@ componentDidMount(){
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          <Row>
-            <Col className="mb-5 mb-xl-0" xl="6">
-             Hola
-            </Col>
-            <Col xl="4">
-              
-            </Col>
-          </Row>
+         
           <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
-              
+
             </Col>
-            <Col xl="4">
-             Hola Mundo
-            </Col>
+           
           </Row>
+          <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+          <br></br><br></br><br></br><br></br>
         </Container>
       </>
     );

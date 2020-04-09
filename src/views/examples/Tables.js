@@ -60,7 +60,7 @@ class Tables extends React.Component {
         if(this.identity.id_tipousuario===1){
 
           customAxios('/tickets',{},'get','application/json',token).then(ress=>{
-          console.log(ress.data)
+        
           if(ress.data.status==='Token is Expired'){
             this.props.history.push('/auth')
           }
@@ -69,7 +69,7 @@ class Tables extends React.Component {
           })
         }).catch(error=>{
           const response = error.response
-          console.log(error)
+          
         })
       }else{
         customAxios(`/ticket/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
@@ -89,7 +89,7 @@ class Tables extends React.Component {
   // Eliminar Ticket
   detele=(id,e)=>{
     customAxios('/ticket/'+id,{},'delete','application/json',this.token).then(ress=>{
-      console.log(ress)
+     
       this.getTickets()
     }).catch(error=>{
       const response = error.response
@@ -99,7 +99,7 @@ class Tables extends React.Component {
   // Validar Identity
   verifiedIdentity=()=>{
     const token = JSON.parse(localStorage.getItem('token'));
-    console.log(token)
+   
     if(!token){
        return this.props.history.push('/auth')
     }

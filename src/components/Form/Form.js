@@ -10,7 +10,7 @@ class FormData extends Component {
     _isMount=false;
     constructor(props) {
         super(props);
-        console.log(props)
+        
         this.token = localStorage.getItem('token');
        
         const identity=JSON.parse(localStorage.getItem('identity'));
@@ -82,7 +82,7 @@ class FormData extends Component {
        
         customAxios('/users',{},'get','application/json',token).then(ress=>{
             if(this._isMount){
-                 console.log(ress)
+               
                 this.setState({users:ress.data})
             }
            
@@ -130,7 +130,7 @@ class FormData extends Component {
   // Validar Identity
   verifiedIdentity=()=>{
     const token = JSON.parse(localStorage.getItem('token'));
-    console.log(token)
+   
     if(!token){
        return this.props.history.push('/auth')
     }
