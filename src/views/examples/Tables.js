@@ -73,7 +73,7 @@ class Tables extends React.Component {
         })
       }else{
         customAxios(`/ticket/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
-          console.log(ress)
+          
           this.setState({
             tickets:ress.data.tickets
           })

@@ -70,7 +70,7 @@ class Login extends React.Component {
     customAxios('/login',this.state.form,'post').then(ress=>{
       localStorage.setItem('token',JSON.stringify(`Bearer ${ress.data.token}`));
       localStorage.setItem('identity',JSON.stringify(ress.data.user[0]));
-      console.log(ress)
+     
       this.setState({loading:false,alert:{status:false}})
       this.props.history.push('/admin')
     }).catch(error=>{
