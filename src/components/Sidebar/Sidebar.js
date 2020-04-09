@@ -62,6 +62,11 @@ class Sidebar extends React.Component {
     super(props);
     this.activeRoute.bind(this);
   }
+  // Logout
+  logoute=e=>{
+    localStorage.clear()
+    this.props.history.push('/auth')
+  }
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -128,11 +133,7 @@ class Sidebar extends React.Component {
           {/* Brand */}
           {logo ? (
             <NavbarBrand className="pt-0" {...navbarBrandProps}>
-              <img
-                alt={logo.imgAlt}
-                className="navbar-brand-img"
-                src={logo.imgSrc}
-              />
+              <span>TicketMatic</span>
             </NavbarBrand>
           ) : null}
           {/* User */}
@@ -154,7 +155,7 @@ class Sidebar extends React.Component {
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
                
-                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                <DropdownItem href="#pablo" onClick={this.logoute}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>

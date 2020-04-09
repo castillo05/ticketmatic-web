@@ -94,43 +94,12 @@ class Login extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardHeader className="bg-transparent pb-5">
               <div className="text-muted text-center mt-2 mb-3">
-                <small>Sign in with</small>
+                <small>Iniciar Sesion</small>
               </div>
-              <div className="btn-wrapper text-center">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/github.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/google.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
-              </div>
+              
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
-              </div>
+             
               <Form role="form">
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
@@ -158,12 +127,7 @@ class Login extends React.Component {
                     id=" customCheckLogin"
                     type="checkbox"
                   />
-                  <label
-                    className="custom-control-label"
-                    htmlFor=" customCheckLogin"
-                  >
-                    <span className="text-muted">Remember me</span>
-                  </label>
+                 
                 </div>
                 {this.state.alert.status && 
                   <Alert color={this.state.alert.type}>
@@ -173,7 +137,7 @@ class Login extends React.Component {
                
                 <div className="text-center">
                   <Button onClick={this.submit} className="my-4" color="primary" type="button">
-                    {this.state.loading ? <Spinner type="grow" color="success" /> :  'Sign in'}
+                    {this.state.loading ? <Spinner type="grow" color="success" /> :  'Iniciar Sesion'}
                   
                    
                   </Button>
@@ -181,26 +145,7 @@ class Login extends React.Component {
               </Form>
             </CardBody>
           </Card>
-          <Row className="mt-3">
-            <Col xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Forgot password?</small>
-              </a>
-            </Col>
-            <Col className="text-right" xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Create new account</small>
-              </a>
-            </Col>
-          </Row>
+         
         </Col>
       </>
     );

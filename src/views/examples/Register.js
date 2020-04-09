@@ -36,6 +36,10 @@ import {
 
 import {customAxios} from '../../axiosUtils';
 
+var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#.*+/\$%\^&\*])(?=.{8,})");
+var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+
+
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +54,50 @@ class Register extends React.Component {
         type:'',
         status:false,
         text:''
+      },
+      levelPassword:{
+        color:'',
+        status:false,
+        text:''
       }
+    }
+  }
+
+  handleKeyDown=e=>{
+    this.levelPass()
+    
+  }
+
+  levelPass=(e)=>{
+    if(strongRegex.test(this.state.form.password)){
+      
+      this.setState({
+        levelPassword:{
+          state:true,
+          color:'text-success',
+          text:'Fuerte'
+        }
+      })
+     
+    }else if(mediumRegex.test(this.state.form.password)){
+      this.setState({
+        levelPassword:{
+          state:true,
+          color:'text-warning',
+          text:'Media'
+        }
+      })
+     
+    }else{
+      
+      this.setState({
+        levelPassword:{
+          state:true,
+          color:'text-danger',
+          text:'Debil'
+        }
+      })
+      
     }
   }
   
@@ -130,7 +177,7 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input onChange={this.hamdleChange} name="password" placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input onKeyUp={this.handleKeyDown} onChange={this.hamdleChange} name="password" placeholder="Password" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -140,7 +187,7 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input onChange={this.hamdleChange} name="password_confirmation" placeholder="Password Confirmation" type="password" autoComplete="new-password"/>
+                    <Input onKeyUp={this.handleKeyDown} onChange={this.hamdleChange} name="password_confirmation" placeholder="Password Confirmation" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
                 {this.state.alert.status && 
@@ -148,10 +195,12 @@ class Register extends React.Component {
                     {this.state.alert.text}
                   </Alert>
                 }
-                <div className="text-muted font-italic">
+                 <div className="text-muted font-italic">
                   <small>
-                    password strength:{" "}
-                    <span className="text-success font-weight-700">strong</span>
+                    Seguridad de la contraseña:{" "}
+                   
+                      <span className={this.state.levelPassword.color}>{this.state.levelPassword.text}</span>
+                   
                   </small>
                 </div>
                 <Row className="my-4">
@@ -162,7 +211,7 @@ class Register extends React.Component {
                         id="customCheckRegister"
                         type="checkbox"
                       />
-                      <label
+                      {/* <label
                         className="custom-control-label"
                         htmlFor="customCheckRegister"
                       >
@@ -172,7 +221,7 @@ class Register extends React.Component {
                             Privacy Policy
                           </a>
                         </span>
-                      </label>
+                      </label> */}
                     </div>
                   </Col>
                 </Row>
