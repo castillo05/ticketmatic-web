@@ -50,28 +50,32 @@ class FormData extends Component {
     saveTicket=e=>{
         e.preventDefault()
         let token = localStorage.getItem('token');
-        customAxios('/ticket',this.state.form,'post','application/json',token).then(result=>{
-            
-            if(result.data.status){
-                console.log(result.data.status)
+        customAxios('/tickets',this.state.form,'post','application/json',token).then(result=>{
+            console.log(result)
+            if(result.data.message){
                 this.setState({
                     alert:{
                         type:'success',
                         status:true,
-                        text:result.data.status
+                        text:result.data.message
                     }
                 })
             }
         }).catch(error=>{
-            const response = error.response
-            console.log(response.data.error)
-            this.setState({
-                alert:{
-                  type:'danger',
-                  status:true,
-                  text:response.data.error
-                }
-              })
+            
+            console.log(error.response)
+            if(error.response.data.message){
+                this.setState({
+                    alert:{
+                      type:'danger',
+                      status:true,
+                      text:error.response.data.message
+                    }
+                  })
+            }else{
+                console.log(error)
+            }
+           
         })
     }
 
@@ -82,13 +86,13 @@ class FormData extends Component {
        
         customAxios('/users',{},'get','application/json',token).then(ress=>{
             if(this._isMount){
-               
-                this.setState({users:ress.data})
+               console.log(ress)
+                this.setState({users:ress.data.users})
             }
            
         }).catch(error=>{
             const response = error.response
-            console.log(response.data.error)
+            console.log(error)
         })
     }
 
@@ -96,28 +100,28 @@ class FormData extends Component {
         this._isMount=true;
         let token = localStorage.getItem('token');
        
-        customAxios('/getticket/'+this.props.match.params.id,{},'get','application/json',token).then(ress=>{
+        customAxios('/tickets/'+this.props.match.params.id,{},'get','application/json',token).then(ress=>{
             if(this._isMount){
-                 console.log(ress.data[0])
+                 console.log(ress.data.tickets[0])
                  this.setState({
                      form:{
-                         id:ress.data[0].id,
-                         id_user:ress.data[0].id_user,
-                         name:ress.data[0].name,
-                         ticket_pedido:ress.data[0].ticket_pedido
+                         id:ress.data.tickets[0].id,
+                         id_user:ress.data.tickets[0].id_user,
+                         name:ress.data.tickets[0].name,
+                         ticket_pedido:ress.data.tickets[0].ticket_pedido
                      }
                 })
             }
            
         }).catch(error=>{
             const response = error.response
-            console.log(response.data.error)
+            console.log(error)
         })
     }
 
     // Editar Ticket
     updateTicket=()=>{
-        customAxios('/ticket/'+this.props.match.params.id,this.state.form,'put','application/json',this.token).then(ress=>{
+        customAxios('/tickets/'+this.props.match.params.id,this.state.form,'put','application/json',this.token).then(ress=>{
             console.log(ress)
             this.props.history.goBack();
         }).catch(error=>{
@@ -166,7 +170,7 @@ class FormData extends Component {
                         {this.state.users.map(u=>
                         this.state.form.id_user===u.id?
                             <option selected value={this.state.form.id_user===u.id?this.state.form.id_user:u.id} key={this.state.form.id_user===u.id?this.state.form.id_user:u.id}>{this.state.form.id_user===u.id?this.state.form.name:u.name}</option>
-                        :<option value={u.id} key={u.id}>{u.name}</option>
+                        :<option value={u.id} key={u.id}>{u.nombre}</option>
                         
                             )}
                         </Input>

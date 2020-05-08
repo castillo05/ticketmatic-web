@@ -166,7 +166,7 @@ class Index extends React.Component {
 
 componentDidMount(){
     this.verifiedIdentity();
-    this.getCount()
+    //this.getCount()
 }
  
   render() {

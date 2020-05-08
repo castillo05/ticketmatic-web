@@ -43,8 +43,8 @@ class Login extends React.Component {
     super(props);
     this.state={
       form:{
-        email:'',
-        password:''
+        mail:'',
+        pass:''
       },
       alert:{
         type:'',
@@ -66,16 +66,29 @@ class Login extends React.Component {
 
   submit=e=>{
     e.preventDefault();
-    this.setState({loading:true})
-    customAxios('/login',this.state.form,'post').then(ress=>{
-      localStorage.setItem('token',JSON.stringify(`Bearer ${ress.data.token}`));
-      localStorage.setItem('identity',JSON.stringify(ress.data.user[0]));
+    //this.setState({loading:true})
+    customAxios('/users/login',this.state.form,'post').then(ress=>{
+      console.log(ress)
+      if(ress.data.message){
+        this.setState({
+          alert:{
+            type:'danger',
+            status:true,
+            text:ress.data.message
+          },
+          loading:false
+        })
+      }else{
+        localStorage.setItem('token',JSON.stringify(`${ress.data.token}`));
+      localStorage.setItem('identity',JSON.stringify(ress.data.user));
      
       this.setState({loading:false,alert:{status:false}})
       this.props.history.push('/admin')
+      }
+      
     }).catch(error=>{
       const response = error.response
-      console.log(response.data.error)
+      console.log(error)
       this.setState({
         alert:{
           type:'danger',
@@ -108,7 +121,7 @@ class Login extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input onChange={this.handleChange} name="email" placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input onChange={this.handleChange} name="mail" placeholder="Email" type="email" autoComplete="new-email"/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -118,7 +131,7 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input onChange={this.handleChange} name="password" placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input onChange={this.handleChange} name="pass" placeholder="Password" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">

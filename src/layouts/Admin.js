@@ -91,7 +91,7 @@ componentDidMount(){
     return (
       <>
      
-      {this.identity.id_tipousuario===2 ?
+      {this.identity.id_tipouser===2 ?
       
       
         <Sidebar

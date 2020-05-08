@@ -57,29 +57,30 @@ class Tables extends React.Component {
     this._isMount=true;
     let token = localStorage.getItem('token');
     if(this._isMount){
-        if(this.identity.id_tipousuario===1){
+      console.log(this.identity)
+        if(this.identity.id_tipouser===1){
 
           customAxios('/tickets',{},'get','application/json',token).then(ress=>{
-        
+            console.log(ress)
           if(ress.data.status==='Token is Expired'){
             this.props.history.push('/auth')
           }
           this.setState({
-            tickets:ress.data
+            tickets:ress.data.tickets
           })
         }).catch(error=>{
           const response = error.response
           
         })
       }else{
-        customAxios(`/ticket/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
-          
+        customAxios(`/tickets/usuario/${this.identity.id}`,{},'get','application/json',token).then(ress=>{
+          console.log(ress)
           this.setState({
             tickets:ress.data.tickets
           })
         }).catch(error=>{
           const response = error.response
-          console.log(response.data.error)
+          console.log(error)
         })
       }
     }
@@ -88,7 +89,7 @@ class Tables extends React.Component {
   }
   // Eliminar Ticket
   detele=(id,e)=>{
-    customAxios('/ticket/'+id,{},'delete','application/json',this.token).then(ress=>{
+    customAxios('/tickets/'+id,{},'delete','application/json',this.token).then(ress=>{
      
       this.getTickets()
     }).catch(error=>{
@@ -133,22 +134,22 @@ class Tables extends React.Component {
                    
                     <tr>
                       <th scope="col">Ticket #</th>
-                      {this.identity.id_tipousuario===1?<th scope="col">Usuario</th>:null}
+                      {this.identity.id_tipouser===1?<th scope="col">Usuario</th>:null}
                       <th scope="col">Descripción</th>
                       
                       <th scope="col" />
                     </tr>
                   </thead>
                   <tbody>
-                  {this.state.tickets.map(t=>
+                   {this.state.tickets!= undefined ? this.state.tickets.map(t=>
                       <tr key={t.id}>
                      
                       <td>{t.id}</td>
-                      {this.identity.id_tipousuario===1?
+                      {this.identity.id_tipouser===1?
                         <td>
                           <Badge color="" className="badge-dot mr-4">
                             <i className="bg-success" />
-                            {t.name}
+                            {t.nombre}
                           </Badge>
                         </td> : null
                       }
@@ -169,7 +170,7 @@ class Tables extends React.Component {
                           >
                             <i className="fas fa-ellipsis-v" />
                           </DropdownToggle>
-                          {this.identity.id_tipousuario===1?
+                          {this.identity.id_tipouser===1?
                           <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem
                              
@@ -193,8 +194,8 @@ class Tables extends React.Component {
                         </UncontrolledDropdown>
                       </td>
                     </tr>   
-                  )}
-                   
+                  ) : null}
+                    
                   </tbody>
                 </Table>
                 <CardFooter className="py-4">

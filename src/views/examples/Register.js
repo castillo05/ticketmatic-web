@@ -45,10 +45,10 @@ class Register extends React.Component {
     super(props);
     this.state={
       form:{
-        name:'',
-        email:'',
-        id_tipousuario:2,
-        password_confirmation:''
+        nombre:'',
+        mail:'',
+        id_tipouser:2,
+        pass:''
       },
       alert:{
         type:'',
@@ -69,7 +69,7 @@ class Register extends React.Component {
   }
 
   levelPass=(e)=>{
-    if(strongRegex.test(this.state.form.password)){
+    if(strongRegex.test(this.state.form.pass)){
       
       this.setState({
         levelPassword:{
@@ -79,7 +79,7 @@ class Register extends React.Component {
         }
       })
      
-    }else if(mediumRegex.test(this.state.form.password)){
+    }else if(mediumRegex.test(this.state.form.pass)){
       this.setState({
         levelPassword:{
           state:true,
@@ -112,11 +112,22 @@ class Register extends React.Component {
 
   saveUser=e=>{
     e.preventDefault()
-    customAxios('/register',this.state.form,'post','application/json').then(ress=>{
-      localStorage.setItem('token',JSON.stringify(`Bearer ${ress.data.token}`));
-      localStorage.setItem('identity',JSON.stringify(ress.data.user));
-      this.props.history.push('/admin')
+    customAxios('/users',this.state.form,'post','application/json').then(ress=>{
+      console.log(ress.status)
+      if(ress.status===200){
+        this.setState({
+          alert:{
+            type:'danger',
+            status:true,
+            text:ress.data.message
+          }
+        })
+      }else if(ress.status===201){
+        this.props.history.push('/auth/login')
+      }
+      
     }).catch(error=>{
+      console.log(error)
       const response = error.response
      if(response){
          Object.values(response.data).forEach(element => {
@@ -126,7 +137,7 @@ class Register extends React.Component {
           alert:{
             type:'danger',
             status:true,
-            text:element[0]
+            text:element
           }
         })
       });
@@ -157,7 +168,7 @@ class Register extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input onChange={this.hamdleChange} name="name" placeholder="Name" type="text" />
+                    <Input onChange={this.hamdleChange} name="nombre" placeholder="Name" type="text" />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -167,7 +178,7 @@ class Register extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" onChange={this.hamdleChange} name="email" type="email" autoComplete="new-email"/>
+                    <Input placeholder="Email" onChange={this.hamdleChange} name="mail" type="email" autoComplete="new-email"/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -177,10 +188,10 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input onKeyUp={this.handleKeyDown} onChange={this.hamdleChange} name="password" placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input onKeyUp={this.handleKeyDown} onChange={this.hamdleChange} name="pass" placeholder="Password" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
-                <FormGroup>
+                {/* <FormGroup>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
@@ -189,7 +200,7 @@ class Register extends React.Component {
                     </InputGroupAddon>
                     <Input onKeyUp={this.handleKeyDown} onChange={this.hamdleChange} name="password_confirmation" placeholder="Password Confirmation" type="password" autoComplete="new-password"/>
                   </InputGroup>
-                </FormGroup>
+                </FormGroup> */}
                 {this.state.alert.status && 
                   <Alert color={this.state.alert.type}>
                     {this.state.alert.text}
